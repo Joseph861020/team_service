@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: team-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: team-service
+  template:
+    metadata:
+      labels:
+        app: team-service
+    spec:
+      containers:
+        - name: team-service
+          image: team-service:latest
+          ports:
+            - containerPort: 5000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 3
